@@ -25,7 +25,7 @@ move_current = next(move)
 
 des_global = 0
 
-def affichage_plateau(path, coord_x=[960], coord_y=[65], col="red"):
+def affichage_plateau(path, coord_x=[960], coord_y=[65], col="blue"):
     im = cv2.imread(path)
     fig = px.imshow(im)
     fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0))
@@ -44,36 +44,35 @@ app.layout = html.Div(children=[
                 dmc.AccordionItem(
                     [
                         dmc.AccordionControl("Joueur 1"),
-                        dmc.AccordionPanel([dmc.Select(label="Couleur", searchable=True, clearable=True, id="color-j1", data=[{"value": "red", "label": "rouge"},{"value": "blue", "label": "bleu"}]),
-                                            html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                                            dmc.Button("Dés", size="lg", id="btn-des-j1", color="violet", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))]),
+                        dmc.AccordionPanel([dmc.Button("Dés", size="lg", id="btn-des-j1", color="blue", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30)),
+                                            dmc.Text("", id="result-des-j1", size="xl", color="blue", transform="uppercase", weight=700)],
+                                            style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'}),
                     ],
                     value="joueur1",
                 ),
                 dmc.AccordionItem(
                     [
                         dmc.AccordionControl("Joueur 2"),
-                        dmc.AccordionPanel([dmc.Select(label="Couleur", searchable=True, clearable=True, id="color-j2", data=[{"value": "red", "label": "rouge"},{"value": "blue", "label": "bleu"}]),
-                                            html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                                            dmc.Button("Dés", size="lg", id="btn-des-j2", color="violet", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))]),
-
+                        dmc.AccordionPanel(dmc.Button("Dés", size="lg", id="btn-des-j2", color="red", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))),
                     ],
                     value="joueur2",
                 ),
             ],
         ),
-    ], style={'width': '20%', 'float': 'left'}),
+    ], style={'width': '10%', 'float': 'left'}),
     html.Div(children=[
         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
         html.Center(dcc.Graph(figure=affichage_plateau(chemin_plateau), id="plateau-figure"))
-    ], style={"width": "80%", "float": "right", "text-align": "center"}),
+    ], style={"width": "90%", "float": "right", "text-align": "center"}),
     dcc.Store(id='x-variable', data=[960]),
     dcc.Store(id='y-variable', data=[65]),
     dcc.Store(id='cpt', data=0)
 ])
 
+
+#tirage dés - déplacement sur le plateau
 @callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des-j1", "n_clicks"),
-        Output("x-variable", "data"), Output("y-variable", "data"), Output("cpt", "data")],
+        Output("x-variable", "data"), Output("y-variable", "data"), Output("cpt", "data"), Output("result-des-j1", "children")],
         [Input("btn-des-j1", "n_clicks"), Input("x-variable", "data"), Input("y-variable", "data"), Input("cpt", "data")],
         prevent_initial_call=True)
 def tirage_des(btn_des, x, y, c):
@@ -94,8 +93,8 @@ def tirage_des(btn_des, x, y, c):
             if c % 10 == 0:
                 move_current = next(move)
 
-        fig = affichage_plateau(chemin_plateau, x, y, "red")
-    return fig, 0, x, y, c
+        fig = affichage_plateau(chemin_plateau, x, y, "blue")
+    return fig, 0, x, y, c, f"{de_1} + {de_2} = {de_1+de_2}"
 
 if __name__ == '__main__':
     app.run(debug=True)
