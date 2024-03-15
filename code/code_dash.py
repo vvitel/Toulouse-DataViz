@@ -12,7 +12,7 @@ import dash
 
 from itertools import cycle
 
-chemin_plateau = "./plateau.png"
+chemin_plateau = "./image/plateau.png"
 
 left = np.array([-1,0])
 up = np.array([0,1])
@@ -24,8 +24,6 @@ move = cycle([left, up, right, down])
 move_current = next(move)
 
 des_global = 0
-#global case_current
-#case_current = 0
 
 def affichage_plateau(path, coord_x=[960], coord_y=[65], col="red"):
     im = cv2.imread(path)
@@ -41,24 +39,42 @@ app = Dash(__name__)
 
 app.layout = html.Div(children=[
     html.Div([
-        dmc.Group([
-            dmc.Button("Dés", size="lg", id="btn-des", color="violet", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30)),
-        ], position="center")
-    ]),
+        dmc.AccordionMultiple(
+            children=[
+                dmc.AccordionItem(
+                    [
+                        dmc.AccordionControl("Joueur 1"),
+                        dmc.AccordionPanel([dmc.Select(label="Couleur", searchable=True, clearable=True, id="color-j1", data=[{"value": "red", "label": "rouge"},{"value": "blue", "label": "bleu"}]),
+                                            html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                                            dmc.Button("Dés", size="lg", id="btn-des-j1", color="violet", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))]),
+                    ],
+                    value="joueur1",
+                ),
+                dmc.AccordionItem(
+                    [
+                        dmc.AccordionControl("Joueur 2"),
+                        dmc.AccordionPanel([dmc.Select(label="Couleur", searchable=True, clearable=True, id="color-j2", data=[{"value": "red", "label": "rouge"},{"value": "blue", "label": "bleu"}]),
+                                            html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                                            dmc.Button("Dés", size="lg", id="btn-des-j2", color="violet", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))]),
+
+                    ],
+                    value="joueur2",
+                ),
+            ],
+        ),
+    ], style={'width': '20%', 'float': 'left'}),
     html.Div(children=[
         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
         html.Center(dcc.Graph(figure=affichage_plateau(chemin_plateau), id="plateau-figure"))
-    ], style={"width":"100%", "display": "inline-block", "text-align": "center"}),
+    ], style={"width": "80%", "float": "right", "text-align": "center"}),
     dcc.Store(id='x-variable', data=[960]),
     dcc.Store(id='y-variable', data=[65]),
-    dcc.Store(id='cpt', data=0),
-    dcc.Store(id='des', data=[0]),
+    dcc.Store(id='cpt', data=0)
 ])
 
-
-@callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des", "n_clicks"),
+@callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des-j1", "n_clicks"),
         Output("x-variable", "data"), Output("y-variable", "data"), Output("cpt", "data")],
-        [Input("btn-des", "n_clicks"), Input("x-variable", "data"), Input("y-variable", "data"), Input("cpt", "data")],
+        [Input("btn-des-j1", "n_clicks"), Input("x-variable", "data"), Input("y-variable", "data"), Input("cpt", "data")],
         prevent_initial_call=True)
 def tirage_des(btn_des, x, y, c):
     global move_current
@@ -67,9 +83,6 @@ def tirage_des(btn_des, x, y, c):
         de_1 = random.randint(1, 6)
         de_2 = random.randint(1, 6)
         random_number = de_1 + de_2
-        #compteur pour tourner
-        #c += random_number
-        #vire_de_bord = sum(1 for i in range(1, c) if i % 10 == 0)
 
         print(random_number)
         
