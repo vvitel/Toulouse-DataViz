@@ -117,7 +117,15 @@ def tirage_des(btn_des, x, y, c):
           Input("cpt", "data"),
         prevent_initial_call=True)
 def case_carte(c):
-    fig = affichage_carte(chemin_images, c % 12)
+    global move_current
+    if np.array_equal(move_current, np.array([-1,0])):
+        fig = affichage_carte(chemin_images, c % 12 + 0)
+    if np.array_equal(move_current, np.array([0,1])):
+        fig = affichage_carte(chemin_images, c % 12 + 12)
+    if np.array_equal(move_current, np.array([1,0])):
+        fig = affichage_carte(chemin_images, c % 12 + 24)
+    if np.array_equal(move_current, np.array([0,-1])):
+        fig = affichage_carte(chemin_images, c % 12 + 36)
     return fig
 
 
