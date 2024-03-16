@@ -24,7 +24,7 @@ move = cycle([left, up, right, down])
 move_current = next(move)
 
 #ouvrir et afficher le plateau
-def affichage_plateau(path, coord_x=[960], coord_y=[65], col="blue"):
+def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
     im = cv2.imread(f"{path}/plateau.png")
     im = im[:,:,[2,1,0]]
     #im = cv2.resize(im, (im.shape[0], im.shape[1]))
@@ -83,8 +83,8 @@ app.layout = html.Div(children=[
     html.Div(children=[
         html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure"))
     ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
-    dcc.Store(id='x-variable', data=[960]),
-    dcc.Store(id='y-variable', data=[65]),
+    dcc.Store(id='x-variable', data=[1444]),
+    dcc.Store(id='y-variable', data=[166]),
     dcc.Store(id='cpt', data=0)
 ])
 
@@ -103,21 +103,21 @@ def tirage_des(btn_des, x, y, c):
         random_number = de_1 + de_2
         
         for j in range(random_number):
-            x[0] += move_current[0] * 90
-            y[0] += move_current[1] * 90
+            x[0] += move_current[0] * 110
+            y[0] += move_current[1] * 110
             c +=1
-            if c % 10 == 0:
+            if c % 12 == 0:
                 move_current = next(move)
 
         fig = affichage_plateau(chemin_images, x, y, "blue")
-    return fig, 0, x, y, 1, f"🎲 {de_1} 🎲 {de_2}"
+    return fig, 0, x, y, c, f"🎲 {de_1} 🎲 {de_2}"
 
 #affichage des cartes en fonction de la case
 @callback(Output(component_id="carte-figure", component_property="figure"),
           Input("cpt", "data"),
         prevent_initial_call=True)
 def case_carte(c):
-    fig = affichage_carte(chemin_images, c%10)
+    fig = affichage_carte(chemin_images, c % 12)
     return fig
 
 
