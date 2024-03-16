@@ -26,11 +26,13 @@ move_current = next(move)
 #ouvrir et afficher le plateau
 def affichage_plateau(path, coord_x=[960], coord_y=[65], col="blue"):
     im = cv2.imread(f"{path}/plateau.png")
+    im = im[:,:,[2,1,0]]
     #im = cv2.resize(im, (im.shape[0], im.shape[1]))
-    fig = px.imshow(im)
-    fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0))
-    fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[0, im.shape[0]])
-    fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[0, im.shape[0]])
+    im = cv2.flip(im, 0) 
+    fig = px.imshow(im, width=im.shape[0]//2, height=im.shape[1]//2)
+    fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0), autosize=True)
+    fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[1]])
+    fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
     fig.add_trace(go.Scatter(x=coord_x, y=coord_y, mode="markers", marker=dict(color=col, size=10), showlegend=False))
     #fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
@@ -39,10 +41,11 @@ def affichage_plateau(path, coord_x=[960], coord_y=[65], col="blue"):
 def affichage_carte(path, id_carte):
     im = cv2.imread(f"{path}/cartes/carte_{id_carte}.png")
     im = im[:,:,[2,1,0]]
+    im = cv2.flip(im, 0)
     fig = px.imshow(im)
-    fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0))
-    fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[im.shape[0], 0])
-    fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[im.shape[1], 0])
+    fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0), autosize=True)
+    fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[0, im.shape[1]])
+    fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, range=[0, im.shape[0]])
     fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
     
@@ -51,6 +54,7 @@ app = Dash(__name__)
 
 app.layout = html.Div(children=[
     html.Div([
+        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
         dmc.AccordionMultiple(
             children=[
                 dmc.AccordionItem(
@@ -71,15 +75,14 @@ app.layout = html.Div(children=[
                 ),
             ],
         ),
-    ], style={'width': '10%', 'float': 'left'}),
+    ], style={'width': '20%', 'float': 'left'}),
     html.Div(children=[
         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
         html.Center(dcc.Graph(figure=affichage_plateau(chemin_images), id="plateau-figure"))
     ], style={"width": "60%", "float": "left", "text-align": "center"}),
     html.Div(children=[
-        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
         html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure"))
-    ], id="carte-div", style={"width": "30%", "float": "left", "text-align": "center"}),
+    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
     dcc.Store(id='x-variable', data=[960]),
     dcc.Store(id='y-variable', data=[65]),
     dcc.Store(id='cpt', data=0)
@@ -105,10 +108,9 @@ def tirage_des(btn_des, x, y, c):
             c +=1
             if c % 10 == 0:
                 move_current = next(move)
-        print(c)
 
         fig = affichage_plateau(chemin_images, x, y, "blue")
-    return fig, 0, x, y, c, f"🎲 {de_1} 🎲 {de_2}"
+    return fig, 0, x, y, 1, f"🎲 {de_1} 🎲 {de_2}"
 
 #affichage des cartes en fonction de la case
 @callback(Output(component_id="carte-figure", component_property="figure"),
