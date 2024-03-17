@@ -29,7 +29,7 @@ move_j1, move_j2 = cycle([left, up, right, down]), cycle([left, up, right, down]
 move_current_j1, move_current_j2 = next(move_j1), next(move_j2)
 
 #ouvrir et afficher le plateau
-def affichage_plateau(path, coord_x1=[1444], coord_y1=[166], coord_x2=[1444], coord_y2=[166], col1="blue", col2="red"):
+def affichage_plateau(path, coord_x1=[1504], coord_y1=[105], coord_x2=[1504], coord_y2=[55], col1="blue", col2="red"):
     im = cv2.imread(f"{path}/plateau.jpg")
     im = im[:,:,[2,1,0]]
     #im = cv2.resize(im, (im.shape[0], im.shape[1]))
@@ -40,7 +40,7 @@ def affichage_plateau(path, coord_x1=[1444], coord_y1=[166], coord_x2=[1444], co
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
     fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=10), showlegend=False))
     fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=10), showlegend=False))    
-    fig.update_traces(hoverinfo='skip', hovertemplate=None)
+    #fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
 #ouvrir et afficher une carte
@@ -238,25 +238,28 @@ def case_carte(c):
 def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
     #obtenir valeur de la case
     global move_current_j1
-    if np.array_equal(move_current_j1, np.array([-1,0])):
-        c = c % 12 + 0
-    if np.array_equal(move_current_j1, np.array([0,1])):
-        c = c % 12 + 12
-    if np.array_equal(move_current_j1, np.array([1,0])):
-        c = c % 12 + 24
-    if np.array_equal(move_current_j1, np.array([0,-1])):
-        c = c % 12 + 36
+    if c != 0:
+        if np.array_equal(move_current_j2, np.array([-1,0])):
+            c = c % 12 + 0
+        if np.array_equal(move_current_j2, np.array([0,1])):
+            c = c % 12 + 12
+        if np.array_equal(move_current_j2, np.array([1,0])):
+            c = c % 12 + 24
+        if np.array_equal(move_current_j2, np.array([0,-1])):
+            c = c % 12 + 36
 
-    #les prix correspondants
-    prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
-    
-    #caluler dépense
-    if btnA: depense = depense + prix_sport[0]
-    if btnB: depense = depense + prix_sport[1]
-    if btnC: depense = depense + prix_sport[2]
-    if btnD: depense = depense + prix_sport[3]
+        #les prix correspondants
+        prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
+        
+        #caluler dépense
+        if btnA: depense = depense + prix_sport[0]
+        if btnB: depense = depense + prix_sport[1]
+        if btnC: depense = depense + prix_sport[2]
+        if btnD: depense = depense + prix_sport[3]
 
-    return f"{depense} €", depense, 0, 0, 0, 0
+        return f"{depense} €", depense, 0, 0, 0, 0
+    else:
+        return f"0 €", 0, 0, 0, 0, 0
 
 ###########################################################################
 ##################################Joueur2##################################
@@ -288,25 +291,28 @@ def case_carte(c):
 def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
     #obtenir valeur de la case
     global move_current_j2
-    if np.array_equal(move_current_j2, np.array([-1,0])):
-        c = c % 12 + 0
-    if np.array_equal(move_current_j2, np.array([0,1])):
-        c = c % 12 + 12
-    if np.array_equal(move_current_j2, np.array([1,0])):
-        c = c % 12 + 24
-    if np.array_equal(move_current_j2, np.array([0,-1])):
-        c = c % 12 + 36
+    if c != 0:
+        if np.array_equal(move_current_j2, np.array([-1,0])):
+            c = c % 12 + 0
+        if np.array_equal(move_current_j2, np.array([0,1])):
+            c = c % 12 + 12
+        if np.array_equal(move_current_j2, np.array([1,0])):
+            c = c % 12 + 24
+        if np.array_equal(move_current_j2, np.array([0,-1])):
+            c = c % 12 + 36
 
-    #les prix correspondants
-    prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
-    
-    #caluler dépense
-    if btnA: depense = depense + prix_sport[0]
-    if btnB: depense = depense + prix_sport[1]
-    if btnC: depense = depense + prix_sport[2]
-    if btnD: depense = depense + prix_sport[3]
+        #les prix correspondants
+        prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
+        
+        #caluler dépense
+        if btnA: depense = depense + prix_sport[0]
+        if btnB: depense = depense + prix_sport[1]
+        if btnC: depense = depense + prix_sport[2]
+        if btnD: depense = depense + prix_sport[3]
 
-    return f"{depense} €", depense, 0, 0, 0, 0
+        return f"{depense} €", depense, 0, 0, 0, 0
+    else:
+        return f"0 €", 0, 0, 0, 0, 0
 
 #afficher les règles
 @app.callback(
