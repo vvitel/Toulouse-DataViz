@@ -38,8 +38,8 @@ def affichage_plateau(path, coord_x1=[1504], coord_y1=[105], coord_x2=[1504], co
     fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0), autosize=True)
     fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[1]])
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
-    fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=10), showlegend=False))
-    fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=10), showlegend=False))    
+    fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=20), showlegend=False))
+    fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=20), showlegend=False))    
     #fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
@@ -139,10 +139,10 @@ app.layout = html.Div(children=[
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
-                    dcc.Store(id="x-variable-j1", data=[1444]),
-                    dcc.Store(id="x-variable-j2", data=[1444]),
-                    dcc.Store(id="y-variable-j1", data=[166]),
-                    dcc.Store(id="y-variable-j2", data=[166]),
+                    dcc.Store(id="x-variable-j1", data=[1504]),
+                    dcc.Store(id="x-variable-j2", data=[1504]),
+                    dcc.Store(id="y-variable-j1", data=[105]),
+                    dcc.Store(id="y-variable-j2", data=[55]),
                     dcc.Store(id="cpt-j1", data=0),
                     dcc.Store(id="cpt-j2", data=0),
                     dcc.Store(id="somme-depense-j1", data=0),
@@ -185,8 +185,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j1 = de_1_j1 + de_2_j1
         
         for j in range(random_number_j1):
-            x_j1[0] += move_current_j1[0] * 105
-            y_j1[0] += move_current_j1[1] * 105
+            x_j1[0] += move_current_j1[0] * 115
+            y_j1[0] += move_current_j1[1] * 115
             c_j1 +=1
             if c_j1 % 12 == 0:
                 move_current_j1 = next(move_j1)
@@ -198,8 +198,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j2 = de_1_j2 + de_2_j2
         
         for j in range(random_number_j2):
-            x_j2[0] += move_current_j2[0] * 105
-            y_j2[0] += move_current_j2[1] * 105
+            x_j2[0] += move_current_j2[0] * 120
+            y_j2[0] += move_current_j2[1] * 120
             c_j2 +=1
             if c_j2 % 12 == 0:
                 move_current_j2 = next(move_j2)
