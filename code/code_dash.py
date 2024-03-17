@@ -30,7 +30,7 @@ move_current = next(move)
 
 #ouvrir et afficher le plateau
 def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
-    im = cv2.imread(f"{path}/plateau.png")
+    im = cv2.imread(f"{path}/plateau.jpg")
     im = im[:,:,[2,1,0]]
     #im = cv2.resize(im, (im.shape[0], im.shape[1]))
     im = cv2.flip(im, 0) 
@@ -44,7 +44,7 @@ def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
 
 #ouvrir et afficher une carte
 def affichage_carte(path, id_carte):
-    im = cv2.imread(f"{path}/cartes/carte_{id_carte}.png")
+    im = cv2.imread(f"{path}/cartes/olympiques/carte_{id_carte}.png")
     im = im[:,:,[2,1,0]]
     im = cv2.flip(im, 0)
     fig = px.imshow(im)
@@ -65,8 +65,9 @@ app.layout = html.Div(children=[
                     dmc.Tab("Jeux Olympiques", value="tab1"),
                     dmc.Tab("Jeux Paralympiques", value="tab2"),
                 ],
-            grow=True),
-            dmc.Tab(
+                grow=True
+            ),
+            dmc.TabsPanel(
                 [
                     html.Div([
                         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
@@ -86,18 +87,19 @@ app.layout = html.Div(children=[
                                     ],
                                     value="joueur1",
                                 ),
-                                dmc.AccordionItem(
+                                html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                                html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure-j1")),
+                                dmc.ButtonGroup(
                                     [
-                                        dmc.AccordionControl("Joueur 2"),
-                                        dmc.AccordionPanel(
-                                            dmc.Button("Dés", size="lg", id="btn-des-j2", color="red", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))
-                                        ),
-                                    ],
-                                    value="joueur2",
+                                        dmc.Button("A", id="btn-catA-j1", size="xl", color="blue", variant="outline", n_clicks=0),
+                                        dmc.Button("B", id="btn-catB-j1", size="xl", color="blue", variant="outline", n_clicks=0),
+                                        dmc.Button("C", id="btn-catC-j1", size="xl", color="blue", variant="outline", n_clicks=0),
+                                        dmc.Button("D", id="btn-catD-j1", size="xl", color="blue", variant="outline", n_clicks=0),
+                                    ]
                                 ),
                                 html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
                                 dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
-                                html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn"))
+                                html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn", size="lg", color="violet"))
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
@@ -105,17 +107,37 @@ app.layout = html.Div(children=[
                         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
                         html.Center(dcc.Graph(figure=affichage_plateau(chemin_images), id="plateau-figure"))
                     ], style={"width": "60%", "float": "left", "text-align": "center"}),
-                    html.Div(children=[
-                        html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure"))
-                    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
-                    html.Div(children=[
-                        dmc.Group([
-                            dmc.Button("A", id="btn-catA", size="md", color="blue", variant="outline", n_clicks=0),
-                            dmc.Button("B", id="btn-catB", size="md", color="blue", variant="outline", n_clicks=0),
-                            dmc.Button("C", id="btn-catC", size="md", color="blue", variant="outline", n_clicks=0),
-                            dmc.Button("D", id="btn-catD", size="md", color="blue", variant="outline", n_clicks=0)
-                        ])
-                    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
+                    html.Div([
+                        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                        dmc.AccordionMultiple(
+                            children=[
+                                dmc.AccordionItem(
+                                    [
+                                        dmc.AccordionControl("Joueur 2"),
+                                        dmc.AccordionPanel(
+                                            [
+                                                dmc.Button("Dés", size="lg", id="btn-des-j2", color="red", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30)),
+                                                dmc.Text("", id="result-des-j2", size="xl", color="red", weight=700),
+                                                dmc.Text("", id="depense-j2", size="xl", color="red", weight=700)
+                                            ],
+                                            style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'}
+                                        ),
+                                    ],
+                                    value="joueur2",
+                                ),
+                                html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                                html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure-j2")),
+                                dmc.ButtonGroup(
+                                    [
+                                        dmc.Button("A", id="btn-catA-j2", size="xl", color="red", variant="outline", n_clicks=0),
+                                        dmc.Button("B", id="btn-catB-j2", size="xl", color="red", variant="outline", n_clicks=0),
+                                        dmc.Button("C", id="btn-catC-j2", size="xl", color="red", variant="outline", n_clicks=0),
+                                        dmc.Button("D", id="btn-catD-j2", size="xl", color="red", variant="outline", n_clicks=0),
+                                    ]
+                                )
+                            ],
+                        ),
+                    ], style={'width': '20%', 'float': 'left'}),
                     dcc.Store(id="x-variable", data=[1444]),
                     dcc.Store(id="y-variable", data=[166]),
                     dcc.Store(id="cpt", data=0),
@@ -123,11 +145,16 @@ app.layout = html.Div(children=[
                 ],
                 value="tab1"
             ),
+            dmc.TabsPanel(
+                html.Div([
+                    html.Button("Bouton Test", id="bouton-test"),
+                ]),
+                value="tab2"
+            )
         ],
         value="tab1", color="red"
     )
 ])
-
 
 #tirage dés - déplacement sur le plateau
 @app.callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des-j1", "n_clicks"),
@@ -155,7 +182,7 @@ def tirage_des(btn_des, x, y, c):
     return fig, 0, x, y, c, f"🎲 {de_1} 🎲 {de_2}"
 
 #affichage des cartes en fonction de la case
-@app.callback(Output(component_id="carte-figure", component_property="figure"),
+@app.callback(Output(component_id="carte-figure-j1", component_property="figure"),
           Input("cpt", "data"),
         prevent_initial_call=True)
 def case_carte(c):
@@ -172,10 +199,10 @@ def case_carte(c):
 
 #dépenses places
 @app.callback([Output("depense-j1", "children"), Output("somme-depense-j1", "data"),
-               Output("btn-catA", "n_clicks"), Output("btn-catB", "n_clicks"),
-               Output("btn-catC", "n_clicks"), Output("btn-catD", "n_clicks")],
-              [Input("btn-catA", "n_clicks"), Input("btn-catB", "n_clicks"),
-               Input("btn-catC", "n_clicks"), Input("btn-catD", "n_clicks"),
+               Output("btn-catA-j1", "n_clicks"), Output("btn-catB-j1", "n_clicks"),
+               Output("btn-catC-j1", "n_clicks"), Output("btn-catD-j1", "n_clicks")],
+              [Input("btn-catA-j1", "n_clicks"), Input("btn-catB-j1", "n_clicks"),
+               Input("btn-catC-j1", "n_clicks"), Input("btn-catD-j1", "n_clicks"),
                Input("somme-depense-j1", "data"), Input("cpt", "data")],
         prevent_initial_call=True)
 def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
