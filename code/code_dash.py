@@ -17,6 +17,9 @@ from itertools import cycle
 chemin_images = "./image"
 df_prix = pd.read_csv("./data/prix_discipline.csv", sep=";", encoding='latin1')
 
+txt1 = "Voilà les règles de notre jeu c'est la fiesta c'est les copains"
+txt2 = "Oh c'est génial musique maestro "
+
 left = np.array([-1,0])
 up = np.array([0,1])
 right = np.array([1,0])
@@ -36,7 +39,7 @@ def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
     fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[1]])
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
     fig.add_trace(go.Scatter(x=coord_x, y=coord_y, mode="markers", marker=dict(color=col, size=10), showlegend=False))
-    #fig.update_traces(hoverinfo='skip', hovertemplate=None)
+    fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
 #ouvrir et afficher une carte
@@ -82,6 +85,9 @@ app.layout = html.Div(children=[
                     ],
                     value="joueur2",
                 ),
+                html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
+                html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn"))
             ],
         ),
     ], style={'width': '20%', 'float': 'left'}),
@@ -178,6 +184,16 @@ def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
     if btnD: depense = depense + prix_sport[3]
 
     return f"{depense} €", depense, 0, 0, 0, 0
+
+#afficher les règles
+@app.callback(
+    Output("modal-regles", "opened"),
+    Input("modal-regles-btn", "n_clicks"),
+    State("modal-regles", "opened"),
+    prevent_initial_call=True,
+)
+def ouvrir_regles(n_clicks, opened):
+    return not opened
 
 
 if __name__ == '__main__':
