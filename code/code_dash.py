@@ -58,58 +58,74 @@ def affichage_carte(path, id_carte):
 app = Dash(__name__)
 
 app.layout = html.Div(children=[
-    html.Div([
-        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-        dmc.AccordionMultiple(
-            children=[
-                dmc.AccordionItem(
-                    [
-                        dmc.AccordionControl("Joueur 1"),
-                        dmc.AccordionPanel(
-                            [
-                                dmc.Button("Dés", size="lg", id="btn-des-j1", color="blue", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30)),
-                                dmc.Text("", id="result-des-j1", size="xl", color="blue", weight=700),
-                                dmc.Text("", id="depense-j1", size="xl", color="blue", weight=700)
+    dmc.Tabs(
+        [
+            dmc.TabsList(
+                [
+                    dmc.Tab("Jeux Olympiques", value="tab1"),
+                    dmc.Tab("Jeux Paralympiques", value="tab2"),
+                ],
+            grow=True),
+            dmc.Tab(
+                [
+                    html.Div([
+                        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                        dmc.AccordionMultiple(
+                            children=[
+                                dmc.AccordionItem(
+                                    [
+                                        dmc.AccordionControl("Joueur 1"),
+                                        dmc.AccordionPanel(
+                                            [
+                                                dmc.Button("Dés", size="lg", id="btn-des-j1", color="blue", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30)),
+                                                dmc.Text("", id="result-des-j1", size="xl", color="blue", weight=700),
+                                                dmc.Text("", id="depense-j1", size="xl", color="blue", weight=700)
+                                            ],
+                                            style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'}
+                                        ),
+                                    ],
+                                    value="joueur1",
+                                ),
+                                dmc.AccordionItem(
+                                    [
+                                        dmc.AccordionControl("Joueur 2"),
+                                        dmc.AccordionPanel(
+                                            dmc.Button("Dés", size="lg", id="btn-des-j2", color="red", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))
+                                        ),
+                                    ],
+                                    value="joueur2",
+                                ),
+                                html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                                dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
+                                html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn"))
                             ],
-                            style={'display': 'flex', 'flexDirection': 'column', 'alignItems': 'center'}
                         ),
-                    ],
-                    value="joueur1",
-                ),
-                dmc.AccordionItem(
-                    [
-                        dmc.AccordionControl("Joueur 2"),
-                        dmc.AccordionPanel(
-                            dmc.Button("Dés", size="lg", id="btn-des-j2", color="red", n_clicks=0, leftIcon=DashIconify(icon="ion:dice", color="white", width=30))
-                        ),
-                    ],
-                    value="joueur2",
-                ),
-                html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
-                html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn"))
-            ],
-        ),
-    ], style={'width': '20%', 'float': 'left'}),
-    html.Div(children=[
-        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-        html.Center(dcc.Graph(figure=affichage_plateau(chemin_images), id="plateau-figure"))
-    ], style={"width": "60%", "float": "left", "text-align": "center"}),
-    html.Div(children=[
-        html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure"))
-    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
-    html.Div(children=[
-        dmc.Group([
-            dmc.Button("A", id="btn-catA", size="lg", color="blue", variant="outline", n_clicks=0),
-            dmc.Button("B", id="btn-catB", size="lg", color="blue", variant="outline", n_clicks=0),
-            dmc.Button("C", id="btn-catC", size="lg", color="blue", variant="outline", n_clicks=0),
-            dmc.Button("D", id="btn-catD", size="lg", color="blue", variant="outline", n_clicks=0)
-        ])
-    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
-    dcc.Store(id="x-variable", data=[1444]),
-    dcc.Store(id="y-variable", data=[166]),
-    dcc.Store(id="cpt", data=0),
-    dcc.Store(id="somme-depense-j1", data=0)
+                    ], style={'width': '20%', 'float': 'left'}),
+                    html.Div(children=[
+                        html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
+                        html.Center(dcc.Graph(figure=affichage_plateau(chemin_images), id="plateau-figure"))
+                    ], style={"width": "60%", "float": "left", "text-align": "center"}),
+                    html.Div(children=[
+                        html.Center(dcc.Graph(figure=affichage_carte(chemin_images, 0), id="carte-figure"))
+                    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
+                    html.Div(children=[
+                        dmc.Group([
+                            dmc.Button("A", id="btn-catA", size="md", color="blue", variant="outline", n_clicks=0),
+                            dmc.Button("B", id="btn-catB", size="md", color="blue", variant="outline", n_clicks=0),
+                            dmc.Button("C", id="btn-catC", size="md", color="blue", variant="outline", n_clicks=0),
+                            dmc.Button("D", id="btn-catD", size="md", color="blue", variant="outline", n_clicks=0)
+                        ])
+                    ], id="carte-div", style={"width": "20%", "float": "left", "text-align": "center"}),
+                    dcc.Store(id="x-variable", data=[1444]),
+                    dcc.Store(id="y-variable", data=[166]),
+                    dcc.Store(id="cpt", data=0),
+                    dcc.Store(id="somme-depense-j1", data=0)
+                ],
+                value="tab1"
+            ),
+        ],
+        value="tab1", color="red"
+    )
 ])
 
 
