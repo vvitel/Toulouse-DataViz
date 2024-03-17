@@ -7,3 +7,4 @@ plotly==5.18.0
 dash-iconify==0.1.2
 dash==2.15.0
 more-itertools==9.1.0
+gunicorn
