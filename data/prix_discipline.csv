@@ -1,0 +1,41 @@
+id_case;discipline;catA;catB;catC;catD
+1;Tir;38;0;0;0
+2;Natation marathon;40;24;0;0
+3;Triathlon;40;24;0;0
+4;Football;76;59;44;30
+5;Hockey;85;62;43;31
+7;Golf;94;38;0;0
+8;Pentathlon moderne;98;100;63;37
+9;Water-polo;99;74;51;33
+10;Tennis;119;102;86;55
+11;Basketball 3x3;130;98;57;29
+13;Badminton;134;96;65;38
+14;Tir a  l'arc;137;101;65;35
+15;Breaking;140;105;65;37
+16;Skateboard;140;105;65;37
+17;BMX Freestyle;140;105;65;37
+19;Escalade;144;107;67;40
+20;Lutte;145;108;70;37
+21;Canoe course en ligne;146;111;76;41
+22;Rugby;146;109;73;42
+23;BMX Racing;150;113;68;37
+25;Aviron;151;113;73;40
+26;Tennis de table;153;113;77;47
+27;Canoe slalom;164;122;83;53
+28;Taekwondo;165;124;82;45
+29;Volleyball;166;118;76;42
+31;Handball;173;123;78;43
+32;Halterophilie;180;125;65;24
+33;Beach Volleyball;183;130;85;43
+34;Escrime;200;141;88;48
+35;Boxe;201;139;83;42
+37;Gymnastique trampoline;230;145;75;24
+38;Basketball;234;162;105;58
+39;Natation artistique;246;175;110;48
+40;Gymnastique rythmique;260;170;102;52
+41;Plongeon;300;215;144;72
+43;Judo;315;216;143;80
+44;Cyclisme sur piste;344;248;172;86
+45;Gymnastique artistique;454;311;184;66
+46;Athletisme;501;276;148;65
+47;Natation;572;325;173;70
