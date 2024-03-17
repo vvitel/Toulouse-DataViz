@@ -25,11 +25,11 @@ up = np.array([0,1])
 right = np.array([1,0])
 down = np.array([0,-1])
 
-move = cycle([left, up, right, down])
-move_current = next(move)
+move_j1, move_j2 = cycle([left, up, right, down]), cycle([left, up, right, down])
+move_current_j1, move_current_j2 = next(move_j1), next(move_j2)
 
 #ouvrir et afficher le plateau
-def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
+def affichage_plateau(path, coord_x1=[1444], coord_y1=[166], coord_x2=[1444], coord_y2=[166], col1="blue", col2="red"):
     im = cv2.imread(f"{path}/plateau.jpg")
     im = im[:,:,[2,1,0]]
     #im = cv2.resize(im, (im.shape[0], im.shape[1]))
@@ -38,7 +38,8 @@ def affichage_plateau(path, coord_x=[1444], coord_y=[166], col="blue"):
     fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0), autosize=True)
     fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[1]])
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
-    fig.add_trace(go.Scatter(x=coord_x, y=coord_y, mode="markers", marker=dict(color=col, size=10), showlegend=False))
+    fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=10), showlegend=False))
+    fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=10), showlegend=False))    
     fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
@@ -138,10 +139,14 @@ app.layout = html.Div(children=[
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
-                    dcc.Store(id="x-variable", data=[1444]),
-                    dcc.Store(id="y-variable", data=[166]),
-                    dcc.Store(id="cpt", data=0),
-                    dcc.Store(id="somme-depense-j1", data=0)
+                    dcc.Store(id="x-variable-j1", data=[1444]),
+                    dcc.Store(id="x-variable-j2", data=[1444]),
+                    dcc.Store(id="y-variable-j1", data=[166]),
+                    dcc.Store(id="y-variable-j2", data=[166]),
+                    dcc.Store(id="cpt-j1", data=0),
+                    dcc.Store(id="cpt-j2", data=0),
+                    dcc.Store(id="somme-depense-j1", data=0),
+                    dcc.Store(id="somme-depense-j2", data=0)
                 ],
                 value="tab1"
             ),
@@ -156,65 +161,140 @@ app.layout = html.Div(children=[
     )
 ])
 
-#tirage dés - déplacement sur le plateau
+
+#tirage dés - déplacement sur le plateau - JOUEUR 1
 @app.callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des-j1", "n_clicks"),
-               Output("x-variable", "data"), Output("y-variable", "data"),
-               Output("cpt", "data"), Output("result-des-j1", "children")],
-              [Input("btn-des-j1", "n_clicks"), Input("x-variable", "data"), 
-               Input("y-variable", "data"), Input("cpt", "data")],
+               Output("x-variable-j1", "data"), Output("y-variable-j1", "data"),
+               Output("cpt-j1", "data"), Output("result-des-j1", "children"),
+               Output("btn-des-j2", "n_clicks"), Output("x-variable-j2", "data"),
+               Output("y-variable-j2", "data"), Output("cpt-j2", "data"), Output("result-des-j2", "children")],
+              [Input("btn-des-j1", "n_clicks"), Input("x-variable-j1", "data"), 
+               Input("y-variable-j1", "data"), Input("cpt-j1", "data"),
+               Input("btn-des-j2", "n_clicks"), Input("x-variable-j2", "data"), 
+               Input("y-variable-j2", "data"), Input("cpt-j2", "data")],
                prevent_initial_call=True)
-def tirage_des(btn_des, x, y, c):
-    global move_current
-    if btn_des:
+def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
+    global move_current_j1
+    global move_current_j2
+    de_1_j1, de_2_j1, de_1_j2, de_2_j2 = 0, 0, 0, 0
+    
+    if btn_des_j1:
         #tirage des dés
-        de_1 = random.randint(1, 6)
-        de_2 = random.randint(1, 6)
-        random_number = de_1 + de_2
+        de_1_j1 = random.randint(1, 6)
+        de_2_j1 = random.randint(1, 6)
+        random_number_j1 = de_1_j1 + de_2_j1
         
-        for j in range(random_number):
-            x[0] += move_current[0] * 105
-            y[0] += move_current[1] * 105
-            c +=1
-            if c % 12 == 0:
-                move_current = next(move)
+        for j in range(random_number_j1):
+            x_j1[0] += move_current_j1[0] * 105
+            y_j1[0] += move_current_j1[1] * 105
+            c_j1 +=1
+            if c_j1 % 12 == 0:
+                move_current_j1 = next(move_j1)
 
-        fig = affichage_plateau(chemin_images, x, y, "blue")
-    return fig, 0, x, y, c, f"🎲 {de_1} 🎲 {de_2}"
+    if btn_des_j2:
+        #tirage des dés
+        de_1_j2 = random.randint(1, 6)
+        de_2_j2 = random.randint(1, 6)
+        random_number_j2 = de_1_j2 + de_2_j2
+        
+        for j in range(random_number_j2):
+            x_j2[0] += move_current_j2[0] * 105
+            y_j2[0] += move_current_j2[1] * 105
+            c_j2 +=1
+            if c_j2 % 12 == 0:
+                move_current_j2 = next(move_j2)
+    
+    fig = affichage_plateau(chemin_images, x_j1, y_j1, x_j2, y_j2, "blue", "red")
 
-#affichage des cartes en fonction de la case
+    return fig, 0, x_j1, y_j1, c_j1, f"🎲 {de_1_j1} 🎲 {de_2_j1}", 0, x_j2, y_j2, c_j2, f"🎲 {de_1_j2} 🎲 {de_2_j2}"
+
+###########################################################################
+##################################Joueur1##################################
+###########################################################################
+#affichage des cartes en fonction de la case - JOUEUR 1
 @app.callback(Output(component_id="carte-figure-j1", component_property="figure"),
-          Input("cpt", "data"),
+          Input("cpt-j1", "data"),
         prevent_initial_call=True)
 def case_carte(c):
-    global move_current
-    if np.array_equal(move_current, np.array([-1,0])):
+    global move_current_j1
+    if np.array_equal(move_current_j1, np.array([-1,0])):
         fig = affichage_carte(chemin_images, c % 12 + 0)
-    if np.array_equal(move_current, np.array([0,1])):
+    if np.array_equal(move_current_j1, np.array([0,1])):
         fig = affichage_carte(chemin_images, c % 12 + 12)
-    if np.array_equal(move_current, np.array([1,0])):
+    if np.array_equal(move_current_j1, np.array([1,0])):
         fig = affichage_carte(chemin_images, c % 12 + 24)
-    if np.array_equal(move_current, np.array([0,-1])):
+    if np.array_equal(move_current_j1, np.array([0,-1])):
         fig = affichage_carte(chemin_images, c % 12 + 36)
     return fig
 
-#dépenses places
+#dépenses places - JOUEUR 1
 @app.callback([Output("depense-j1", "children"), Output("somme-depense-j1", "data"),
                Output("btn-catA-j1", "n_clicks"), Output("btn-catB-j1", "n_clicks"),
                Output("btn-catC-j1", "n_clicks"), Output("btn-catD-j1", "n_clicks")],
               [Input("btn-catA-j1", "n_clicks"), Input("btn-catB-j1", "n_clicks"),
                Input("btn-catC-j1", "n_clicks"), Input("btn-catD-j1", "n_clicks"),
-               Input("somme-depense-j1", "data"), Input("cpt", "data")],
+               Input("somme-depense-j1", "data"), Input("cpt-j1", "data")],
         prevent_initial_call=True)
 def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
     #obtenir valeur de la case
-    global move_current
-    if np.array_equal(move_current, np.array([-1,0])):
+    global move_current_j1
+    if np.array_equal(move_current_j1, np.array([-1,0])):
         c = c % 12 + 0
-    if np.array_equal(move_current, np.array([0,1])):
+    if np.array_equal(move_current_j1, np.array([0,1])):
         c = c % 12 + 12
-    if np.array_equal(move_current, np.array([1,0])):
+    if np.array_equal(move_current_j1, np.array([1,0])):
         c = c % 12 + 24
-    if np.array_equal(move_current, np.array([0,-1])):
+    if np.array_equal(move_current_j1, np.array([0,-1])):
+        c = c % 12 + 36
+
+    #les prix correspondants
+    prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
+    
+    #caluler dépense
+    if btnA: depense = depense + prix_sport[0]
+    if btnB: depense = depense + prix_sport[1]
+    if btnC: depense = depense + prix_sport[2]
+    if btnD: depense = depense + prix_sport[3]
+
+    return f"{depense} €", depense, 0, 0, 0, 0
+
+###########################################################################
+##################################Joueur2##################################
+###########################################################################
+#affichage des cartes en fonction de la case - JOUEUR 2
+@app.callback(Output(component_id="carte-figure-j2", component_property="figure"),
+          Input("cpt-j2", "data"),
+        prevent_initial_call=True)
+def case_carte(c):
+    global move_current_j2
+    if np.array_equal(move_current_j2, np.array([-1,0])):
+        fig = affichage_carte(chemin_images, c % 12 + 0)
+    if np.array_equal(move_current_j2, np.array([0,1])):
+        fig = affichage_carte(chemin_images, c % 12 + 12)
+    if np.array_equal(move_current_j2, np.array([1,0])):
+        fig = affichage_carte(chemin_images, c % 12 + 24)
+    if np.array_equal(move_current_j2, np.array([0,-1])):
+        fig = affichage_carte(chemin_images, c % 12 + 36)
+    return fig
+
+#dépenses places - JOUEUR 2
+@app.callback([Output("depense-j2", "children"), Output("somme-depense-j2", "data"),
+               Output("btn-catA-j2", "n_clicks"), Output("btn-catB-j2", "n_clicks"),
+               Output("btn-catC-j2", "n_clicks"), Output("btn-catD-j2", "n_clicks")],
+              [Input("btn-catA-j2", "n_clicks"), Input("btn-catB-j2", "n_clicks"),
+               Input("btn-catC-j2", "n_clicks"), Input("btn-catD-j2", "n_clicks"),
+               Input("somme-depense-j2", "data"), Input("cpt-j2", "data")],
+        prevent_initial_call=True)
+def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
+    #obtenir valeur de la case
+    global move_current_j2
+    if np.array_equal(move_current_j2, np.array([-1,0])):
+        c = c % 12 + 0
+    if np.array_equal(move_current_j2, np.array([0,1])):
+        c = c % 12 + 12
+    if np.array_equal(move_current_j2, np.array([1,0])):
+        c = c % 12 + 24
+    if np.array_equal(move_current_j2, np.array([0,-1])):
         c = c % 12 + 36
 
     #les prix correspondants
