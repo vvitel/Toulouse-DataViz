@@ -8,8 +8,7 @@ import plotly.graph_objects as go
 import random
 
 from dash_iconify import DashIconify
-from dash import Dash, html, dash_table, dcc, callback, Output, Input, State
-from datetime import datetime, date
+from dash import Dash, html, dcc, callback, Output, Input, State
 import dash
 
 from itertools import cycle
@@ -157,10 +156,9 @@ app.layout = html.Div(children=[
                 value="tab2"
             )
         ],
-        value="tab1", color="red"
+        value="tab1", color="violet"
     )
 ])
-
 
 #tirage dés - déplacement sur le plateau - JOUEUR 1
 @app.callback([Output(component_id="plateau-figure", component_property="figure"), Output("btn-des-j1", "n_clicks"),
