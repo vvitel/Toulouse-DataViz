@@ -56,6 +56,7 @@ def affichage_carte(path, id_carte):
     
 
 app = Dash(__name__)
+server = app.server
 
 app.layout = html.Div(children=[
     dmc.Tabs(
