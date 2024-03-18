@@ -17,8 +17,7 @@ chemin_images = "./image"
 df_prix = pd.read_csv("./data/prix_discipline.csv", sep=";", encoding='latin1')
 df_prix_para = pd.read_csv("./data/prix_discipline_para.csv", sep=";", encoding='latin1')
 
-txt1 = "Voilà les règles de notre jeu c'est la fiesta c'est les copains"
-txt2 = "Oh c'est génial musique maestro "
+txt1 = "J.O.P.oly se compose de deux plateaux de jeu, chacun avec de 2 dés, de 2 pions (rouge et bleu ; un par joueur). Sur le plateau Jeux Olympiques (JO), 40 cartes épreuves, 5 cartes événements et 2 cartes CHANCE. Sur le plateau Jeux Paralympiques (JP), 21 cartes épreuves, 5 cartes événements et 13 cartes CHANCE (ou PAS DE CHANCE). Préparez-vous, échauffez-vous et placez-vous sur la ligne, ou plutôt la case départ. Pensez à adapter le zoom en fonction de votre écran. *coup de pistolet* Joueur 1 prenez place et cliquez sur la flèche correspondante. Lancez les dés. Continuez de vous échauffer pendant que les dés font leur travail. Si vous souhaitez acheter des places, cliquez autant de fois que vous le voulez sur la catégorie correspondante. Puis, la main passe au Joueur 2 qui est dans les starting-blocks. A vos marques, prêt ? A votre tour. "
 
 left = np.array([-1,0])
 up = np.array([0,1])
@@ -114,7 +113,7 @@ app.layout = html.Div(children=[
                                     ]
                                 ),
                                 html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                                dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
+                                dmc.Modal(title="Règles du Jeu", id="modal-regles", size="55%", zIndex=10000, children=[dmc.Text(txt1)]),
                                 html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn", size="lg", color="violet"))
                             ],
                         ),
@@ -196,7 +195,7 @@ app.layout = html.Div(children=[
                                     ]
                                 ),
                                 html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                                dmc.Modal(title="Règles du Jeu", id="modal-regles-para", size="55%", zIndex=10000, children=[dmc.Text(f"{txt1}\n{txt2}")]),
+                                dmc.Modal(title="Règles du Jeu", id="modal-regles-para", size="55%", zIndex=10000, children=[dmc.Text(txt1)]),
                                 html.Center(dmc.Button("Règles du Jeu", id="modal-regles-btn-para", size="lg", color="violet"))
                             ],
                         ),
@@ -428,8 +427,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j1_para = de_1_j1_para + de_2_j1_para
         
         for j in range(random_number_j1_para):
-            x_j1[0] += move_current_j1_para[0] * 400 
-            y_j1[0] += move_current_j1_para[1] * 400
+            x_j1[0] += move_current_j1_para[0] * 420 * ((4555*7)/(5308*6))
+            y_j1[0] += move_current_j1_para[1] * 420 * ((4555*7)/(5308*6))
             c_j1 +=1
             if c_j1 % 12 == 0:
                 move_current_j1_para = next(move_j1)
@@ -441,8 +440,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j2_para = de_1_j2_para + de_2_j2_para
         
         for j in range(random_number_j2_para):
-            x_j2[0] += move_current_j2_para[0] * 400
-            y_j2[0] += move_current_j2_para[1] * 400
+            x_j2[0] += move_current_j2_para[0] * 420 * ((4555*7)/(5308*6))
+            y_j2[0] += move_current_j2_para[1] * 420 * ((4555*7)/(5308*6))
             c_j2 +=1
             if c_j2 % 10 == 0:
                 move_current_j2_para = next(move_j2_para)
