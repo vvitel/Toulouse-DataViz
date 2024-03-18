@@ -340,7 +340,7 @@ def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
             c = c % 12 + 36
 
         #les prix correspondants
-        if c in df_prix["id_case"].values():
+        if c in df_prix["id_case"].values:
             prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
         
         #caluler dépense
@@ -394,7 +394,7 @@ def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
             c = c % 12 + 36
 
         #les prix correspondants
-        if c in df_prix["id_case"].values():
+        if c in df_prix["id_case"].values:
             prix_sport = df_prix[["catA", "catB", "catC", "catD"]][df_prix["id_case"] == c].values[0].tolist()
         
         #caluler dépense
@@ -496,7 +496,7 @@ def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
             c = c % 10 + 30
 
         #les prix correspondants
-        if c in df_prix_para["id_case"].values():
+        if c in df_prix_para["id_case"].values:
             prix_sport = df_prix_para[["catA", "catA_PFR", "catB", "catB_PFR"]][df_prix_para["id_case"] == c].values[0].tolist()
         
         #caluler dépense
@@ -550,7 +550,7 @@ def calcul_depense(btnA, btnB, btnC, btnD, depense, c):
             c = c % 10 + 30
 
         #les prix correspondants
-        if c in df_prix_para["id_case"].values():
+        if c in df_prix_para["id_case"].values:
             prix_sport = df_prix_para[["catA", "catA_PFR", "catB", "catB_PFR"]][df_prix_para["id_case"] == c].values[0].tolist()
         
         #caluler dépense
