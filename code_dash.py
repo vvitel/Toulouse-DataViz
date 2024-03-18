@@ -55,7 +55,7 @@ def affichage_plateau(image, coord_x1=[5000], coord_y1=[350], coord_x2=[5000], c
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, image.shape[0]])
     fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=20), showlegend=False))
     fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=20), showlegend=False))    
-    #fig.update_traces(hoverinfo='skip', hovertemplate=None)
+    fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
 #ouvrir et afficher une carte
@@ -237,8 +237,8 @@ app.layout = html.Div(children=[
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
-                    dcc.Store(id="x-variable-j1-para", data=[5000]),
-                    dcc.Store(id="x-variable-j2-para", data=[5000]),
+                    dcc.Store(id="x-variable-j1-para", data=[4255]),
+                    dcc.Store(id="x-variable-j2-para", data=[4255]),
                     dcc.Store(id="y-variable-j1-para", data=[350]),
                     dcc.Store(id="y-variable-j2-para", data=[200]),
                     dcc.Store(id="cpt-j1-para", data=0),
@@ -427,12 +427,13 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         de_1_j1_para = random.randint(1, 6)
         de_2_j1_para = random.randint(1, 6)
         random_number_j1_para = de_1_j1_para + de_2_j1_para
+        print(de_1_j1_para, de_2_j1_para,random_number_j1_para)
         
         for j in range(random_number_j1_para):
-            x_j1[0] += move_current_j1_para[0] * 420 * ((4555*7)/(5308*6)) *2
-            y_j1[0] += move_current_j1_para[1] * 420 * ((4555*7)/(5308*6)) * 2
+            x_j1[0] += move_current_j1_para[0] * 400 * ((4555*7)/(5308*6))
+            y_j1[0] += move_current_j1_para[1] * 400 * ((4555*7)/(5308*6))
             c_j1 +=1
-            if c_j1 % 12 == 0:
+            if c_j1 % 10 == 0:
                 move_current_j1_para = next(move_j1)
 
     if btn_des_j2:
@@ -440,17 +441,17 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         de_1_j2_para = random.randint(1, 6)
         de_2_j2_para = random.randint(1, 6)
         random_number_j2_para = de_1_j2_para + de_2_j2_para
-        
+        print(de_1_j2_para, de_2_j2_para,random_number_j2_para)
         for j in range(random_number_j2_para):
-            x_j2[0] += move_current_j2_para[0] * 420 * ((4555*7)/(5308*6)) * 2
-            y_j2[0] += move_current_j2_para[1] * 420 * ((4555*7)/(5308*6)) * 2
+            x_j2[0] += move_current_j2_para[0] * 400 * ((4555*7)/(5308*6))
+            y_j2[0] += move_current_j2_para[1] * 400 * ((4555*7)/(5308*6))
             c_j2 +=1
             if c_j2 % 10 == 0:
                 move_current_j2_para = next(move_j2_para)
     
     fig_para = affichage_plateau(im_para, x_j1, y_j1, x_j2, y_j2, "blue", "red", para=True)
 
-    return fig_para, 0, x_j1, y_j1, c_j1, f"🎲 {de_1_j1_para} 🎲 {de_2_j1_para}", 0, x_j2, y_j2, c_j2, f"🎲 {de_2_j2_para} 🎲 {de_2_j2_para}"
+    return fig_para, 0, x_j1, y_j1, c_j1, f"🎲 {de_1_j1_para} 🎲 {de_2_j1_para}", 0, x_j2, y_j2, c_j2, f"🎲 {de_1_j2_para} 🎲 {de_2_j2_para}"
 
 ###########################################################################
 ##################################Joueur1##################################
