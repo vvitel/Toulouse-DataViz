@@ -1,23 +1,24 @@
-id_case;catA;catA_PFR;catB;catB_PFR
-1;15;15;0;0
-3;25;20;20;0
-6;25;20;20;0
-8;25;20;20;0
-9;25;20;20;0
-11;25;25;15;15
-13;25;25;20;20
-14;25;25;20;20
-16;25;25;20;20
-18;40;25;25;0
-19;40;25;25;15
-21;40;40;25;25
-23;40;40;25;25
-24;40;40;25;25
-26;40;40;25;25
-27;75;45;45;15
-29;75;45;45;25
-31;75;45;45;25
-32;75;45;45;25
-34;75;45;45;25
-37;75;45;45;25
-39;75;45;45;25
+Discipline;id_case;catA;catA_PFR;catB;catB_PFR
+Para Tir sportif;1;15;15;0;0
+Volleyball assis;3;20;15;15;0
+Goalball;6;20;15;15;0
+Boccia;8;21;16;16;0
+Para Aviron;9;23;23;18;18
+Para Canoe;11;24;24;19;19
+Para Tir a  l'arc;13;24;24;19;19
+Para halterophilie;14;25;25;15;15
+Tennis fauteuil;16;31;26;22;17
+Cecifoot;18;32;32;17;17
+escrime fauteuil;19;33;33;18;18
+Para Badminton;21;34;34;19;19
+Para Taekwondo;23;36;36;21;21
+Para Tennis de Table;24;36;21;21;0
+Para equitation;26;40;25;25;15
+rugby fauteuil;27;44;28;28;16
+Basket Fauteuil;29;46;30;30;17
+Para Judo;32;49;31;31;18
+Para Natation;34;55;35;35;20
+Para Athletisme;37;56;35;35;20
+para cyclisme sur piste;39;70;45;45;15
+Ouverture;5;700;150;450;150
+Cloture;35;400;45;250;45

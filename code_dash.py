@@ -32,26 +32,29 @@ move_current_j1, move_current_j2 = next(move_j1), next(move_j2)
 move_current_j1_para, move_current_j2_para = next(move_j1_para), next(move_j2_para)
 
 #ouvrir et afficher le plateau
-def affichage_plateau(path, coord_x1=[1504], coord_y1=[105], coord_x2=[1504], coord_y2=[55], col1="blue", col2="red", para=False):
+def affichage_plateau(path, coord_x1=[5000], coord_y1=[350], coord_x2=[5000], coord_y2=[200], col1="blue", col2="red", para=False):
     #plateau jeux olympiques
-    im = cv2.imread(f"{path}/plateau.jpg")
+    im = cv2.imread(f"{path}/plateau.png")
     im = im[:,:,[2,1,0]]
     im = cv2.flip(im, 0)
+    fig = px.imshow(im, width=im.shape[0]//7, height=im.shape[1]//7)
+
 
     #plateau jeux paralympiques
     if para:
-        im = cv2.imread(f"{path}/plateau_para.jpg")
+        im = cv2.imread(f"{path}/plateau_para.png")
         im = im[:,:,[2,1,0]]
         #im = cv2.resize(im, (im.shape[0], im.shape[1]))
         im = cv2.flip(im, 0)
+        fig = px.imshow(im, width=im.shape[0]//6, height=im.shape[1]//6)
 
-    fig = px.imshow(im, width=im.shape[0]//2, height=im.shape[1]//2)
+    
     fig.update_layout(template = None, margin=dict(l=0, r=0, t=0, b=0), autosize=True)
     fig.update_xaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[1]])
     fig.update_yaxes(visible=False, showticklabels=False, showgrid=False, showline=False, domain=[0,1], range=[0, im.shape[0]])
     fig.add_trace(go.Scatter(x=coord_x1, y=coord_y1, mode="markers", marker=dict(color=col1, size=20), showlegend=False))
     fig.add_trace(go.Scatter(x=coord_x2, y=coord_y2, mode="markers", marker=dict(color=col2, size=20), showlegend=False))    
-    fig.update_traces(hoverinfo='skip', hovertemplate=None)
+    #fig.update_traces(hoverinfo='skip', hovertemplate=None)
     return fig
 
 #ouvrir et afficher une carte
@@ -151,10 +154,10 @@ app.layout = html.Div(children=[
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
-                    dcc.Store(id="x-variable-j1", data=[1504]),
-                    dcc.Store(id="x-variable-j2", data=[1504]),
-                    dcc.Store(id="y-variable-j1", data=[105]),
-                    dcc.Store(id="y-variable-j2", data=[55]),
+                    dcc.Store(id="x-variable-j1", data=[5000]),
+                    dcc.Store(id="x-variable-j2", data=[5000]),
+                    dcc.Store(id="y-variable-j1", data=[350]),
+                    dcc.Store(id="y-variable-j2", data=[200]),
                     dcc.Store(id="cpt-j1", data=0),
                     dcc.Store(id="cpt-j2", data=0),
                     dcc.Store(id="somme-depense-j1", data=0),
@@ -200,7 +203,7 @@ app.layout = html.Div(children=[
                     ], style={'width': '20%', 'float': 'left'}),
                     html.Div(children=[
                         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
-                        html.Center(dcc.Graph(figure=affichage_plateau(chemin_images, para=True), id="plateau-figure-para"))
+                        html.Center(dcc.Graph(figure=affichage_plateau(chemin_images, coord_x1=[4270], coord_y1=[405], coord_x2=[4270], coord_y2=[255], para=True), id="plateau-figure-para"))
                     ], style={"width": "60%", "float": "left", "text-align": "center"}),
                     html.Div([
                         html.Hr(style={'border': '1px solid rgba(0, 0, 0, 0)'}),
@@ -233,10 +236,10 @@ app.layout = html.Div(children=[
                             ],
                         ),
                     ], style={'width': '20%', 'float': 'left'}),
-                    dcc.Store(id="x-variable-j1-para", data=[1504]),
-                    dcc.Store(id="x-variable-j2-para", data=[1504]),
-                    dcc.Store(id="y-variable-j1-para", data=[105]),
-                    dcc.Store(id="y-variable-j2-para", data=[55]),
+                    dcc.Store(id="x-variable-j1-para", data=[5000]),
+                    dcc.Store(id="x-variable-j2-para", data=[5000]),
+                    dcc.Store(id="y-variable-j1-para", data=[350]),
+                    dcc.Store(id="y-variable-j2-para", data=[200]),
                     dcc.Store(id="cpt-j1-para", data=0),
                     dcc.Store(id="cpt-j2-para", data=0),
                     dcc.Store(id="somme-depense-j1-para", data=0),
@@ -272,8 +275,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j1 = de_1_j1 + de_2_j1
         
         for j in range(random_number_j1):
-            x_j1[0] += move_current_j1[0] * 115
-            y_j1[0] += move_current_j1[1] * 115
+            x_j1[0] += move_current_j1[0] * 400
+            y_j1[0] += move_current_j1[1] * 400
             c_j1 +=1
             if c_j1 % 12 == 0:
                 move_current_j1 = next(move_j1)
@@ -285,8 +288,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j2 = de_1_j2 + de_2_j2
         
         for j in range(random_number_j2):
-            x_j2[0] += move_current_j2[0] * 120
-            y_j2[0] += move_current_j2[1] * 120
+            x_j2[0] += move_current_j2[0] * 400
+            y_j2[0] += move_current_j2[1] * 400
             c_j2 +=1
             if c_j2 % 12 == 0:
                 move_current_j2 = next(move_j2)
@@ -425,8 +428,8 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j1_para = de_1_j1_para + de_2_j1_para
         
         for j in range(random_number_j1_para):
-            x_j1[0] += move_current_j1_para[0] * 115
-            y_j1[0] += move_current_j1_para[1] * 115
+            x_j1[0] += move_current_j1_para[0] * 400 
+            y_j1[0] += move_current_j1_para[1] * 400
             c_j1 +=1
             if c_j1 % 12 == 0:
                 move_current_j1_para = next(move_j1)
@@ -438,15 +441,15 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
         random_number_j2_para = de_1_j2_para + de_2_j2_para
         
         for j in range(random_number_j2_para):
-            x_j2[0] += move_current_j2_para[0] * 120
-            y_j2[0] += move_current_j2_para[1] * 120
+            x_j2[0] += move_current_j2_para[0] * 400
+            y_j2[0] += move_current_j2_para[1] * 400
             c_j2 +=1
             if c_j2 % 10 == 0:
                 move_current_j2_para = next(move_j2_para)
     
     fig_para = affichage_plateau(chemin_images, x_j1, y_j1, x_j2, y_j2, "blue", "red", para=True)
 
-    return fig_para, 0, x_j1, y_j1, c_j1, f"🎲 {de_1_j1_para} 🎲 {de_2_j1_para}", 0, x_j2, y_j2, c_j2, f"🎲 {de_2_j1_para} 🎲 {de_2_j2_para}"
+    return fig_para, 0, x_j1, y_j1, c_j1, f"🎲 {de_1_j1_para} 🎲 {de_2_j1_para}", 0, x_j2, y_j2, c_j2, f"🎲 {de_2_j2_para} 🎲 {de_2_j2_para}"
 
 ###########################################################################
 ##################################Joueur1##################################

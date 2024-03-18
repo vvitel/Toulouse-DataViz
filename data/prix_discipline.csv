@@ -4,6 +4,7 @@ id_case;discipline;catA;catB;catC;catD
 3;Triathlon;40;24;0;0
 4;Football;76;59;44;30
 5;Hockey;85;62;43;31
+6;Ouverture;2700;1600;900;500
 7;Golf;94;38;0;0
 8;Pentathlon moderne;98;100;63;37
 9;Water-polo;99;74;51;33
@@ -34,6 +35,7 @@ id_case;discipline;catA;catB;catC;catD
 39;Natation artistique;246;175;110;48
 40;Gymnastique rythmique;260;170;102;52
 41;Plongeon;300;215;144;72
+42;Cloture;2700;1600;900;500
 43;Judo;315;216;143;80
 44;Cyclisme sur piste;344;248;172;86
 45;Gymnastique artistique;454;311;184;66
