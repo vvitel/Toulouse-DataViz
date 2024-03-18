@@ -436,7 +436,7 @@ def tirage_des(btn_des_j1, x_j1, y_j1, c_j1, btn_des_j2, x_j2, y_j2, c_j2):
             y_j1[0] += move_current_j1_para[1] * 400 * ((4555*7)/(5308*6))
             c_j1 +=1
             if c_j1 % 10 == 0:
-                move_current_j1_para = next(move_j1)
+                move_current_j1_para = next(move_j1_para)
 
     if btn_des_j2:
         #tirage des dés
